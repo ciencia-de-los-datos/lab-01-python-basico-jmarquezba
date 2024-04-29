@@ -13,6 +13,7 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 """
 
 
+
 def pregunta_01():
     """
     Retorne la suma de la segunda columna.
@@ -21,7 +22,13 @@ def pregunta_01():
     214
 
     """
-    return
+    rpta = 0
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            rpta += int(columns[1])
+
+    return rpta
 
 
 def pregunta_02():
@@ -39,7 +46,19 @@ def pregunta_02():
     ]
 
     """
-    return
+    counts = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[0]
+            if letter in counts:
+                counts[letter] += 1
+            else:
+                counts[letter] = 1
+    
+    rpta = sorted([(letter, count) for letter, count in counts.items()])
+
+    return rpta
 
 
 def pregunta_03():
@@ -57,7 +76,20 @@ def pregunta_03():
     ]
 
     """
-    return
+    counts = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[0]
+            value = int(columns[1])
+            if letter in counts:
+                counts[letter] += value
+            else:
+                counts[letter] = value
+    
+    rpta = sorted([(letter, count) for letter, count in counts.items()])
+    
+    return rpta
 
 
 def pregunta_04():
@@ -82,7 +114,20 @@ def pregunta_04():
     ]
 
     """
-    return
+    counts = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            date = columns[2]
+            month = date.split('-')[1]
+            if month in counts:
+                counts[month] += 1
+            else:
+                counts[month] = 1
+    
+    rpta = sorted([(month, count) for month, count in counts.items()])
+
+    return rpta
 
 
 def pregunta_05():
@@ -100,7 +145,26 @@ def pregunta_05():
     ]
 
     """
-    return
+    min_max_values = []
+    with open('data.csv', 'r') as file:
+        data = {}
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[0]
+            value = int(columns[1])
+            if letter in data:
+                data[letter].append(value)
+            else:
+                data[letter] = [value]
+    
+    for letter, values in data.items():
+        min_value = min(values)
+        max_value = max(values)
+        min_max_values.append((letter, max_value, min_value))
+    
+    min_max_values.sort(key=lambda x: x[0])
+    
+    return min_max_values
 
 
 def pregunta_06():
@@ -125,7 +189,27 @@ def pregunta_06():
     ]
 
     """
-    return
+    min_max_values = []
+    with open('data.csv', 'r') as file:
+        data = {}
+        for line in file:
+            columns = line.strip().split('\t')
+            values = columns[4].split(',')
+            for value in values:
+                key, val = value.split(':')
+                if key in data:
+                    data[key].append(int(val))
+                else:
+                    data[key] = [int(val)]
+    
+    for key, values in data.items():
+        min_value = min(values)
+        max_value = max(values)
+        min_max_values.append((key, min_value, max_value))
+    
+    min_max_values.sort(key=lambda x: x[0]) 
+    
+    return min_max_values
 
 
 def pregunta_07():
@@ -149,7 +233,22 @@ def pregunta_07():
     ]
 
     """
-    return
+    rpta = []
+    with open('data.csv', 'r') as file:
+        data = {}
+        for line in file:
+            columns = line.strip().split('\t')
+            value = int(columns[1])
+            letter = columns[0]
+            if value in data:
+                data[value].append(letter)
+            else:
+                data[value] = [letter]
+    
+    for value, letters in sorted(data.items()):
+        rpta.append((value, letters))
+    
+    return rpta
 
 
 def pregunta_08():
@@ -174,7 +273,23 @@ def pregunta_08():
     ]
 
     """
-    return
+    rpta = []
+    with open('data.csv', 'r') as file:
+        data = {}
+        for line in file:
+            columns = line.strip().split('\t')
+            value = int(columns[1])
+            letter = columns[0]
+            if value in data:
+                if letter not in data[value]:
+                    data[value].append(letter)
+            else:
+                data[value] = [letter]
+    
+    for value, letters in sorted(data.items()):
+        rpta.append((value, sorted(letters)))
+    
+    return rpta
 
 
 def pregunta_09():
@@ -197,7 +312,19 @@ def pregunta_09():
     }
 
     """
-    return
+    counts = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            values = columns[4].split(',')
+            for value in values:
+                key, _ = value.split(':')
+                if key in counts:
+                    counts[key] += 1
+                else:
+                    counts[key] = 1
+    
+    return counts
 
 
 def pregunta_10():
@@ -218,7 +345,16 @@ def pregunta_10():
 
 
     """
-    return
+    rpta = []
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[0]
+            count_col4 = len(columns[3].split(','))
+            count_col5 = len(columns[4].split(','))
+            rpta.append((letter, count_col4, count_col5))
+    
+    return rpta
 
 
 def pregunta_11():
@@ -236,10 +372,23 @@ def pregunta_11():
         "f": 134,
         "g": 35,
     }
-
-
     """
-    return
+    counts = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[3]
+            value = int(columns[1])
+            keys = letter.split(',')
+            for key in keys:
+                if key in counts:
+                    counts[key] += value
+                else:
+                    counts[key] = value
+    
+    rpta = {k: v for k, v in sorted(counts.items())}
+    
+    return rpta
 
 
 def pregunta_12():
@@ -257,4 +406,18 @@ def pregunta_12():
     }
 
     """
-    return
+    rpta = {}
+    with open('data.csv', 'r') as file:
+        for line in file:
+            columns = line.strip().split('\t')
+            letter = columns[0]
+            values = columns[4].split(',')
+            for value in values:
+                key = value.split(':')[0]
+                count = int(value.split(':')[1])
+                if letter in rpta:
+                    rpta[letter] += count
+                else:
+                    rpta[letter] = count
+    
+    return rpta
